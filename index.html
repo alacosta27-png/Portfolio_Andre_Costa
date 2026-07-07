@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>André Costa — Logística & Operações</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #12161b;
+    --surface: #1a2027;
+    --surface-2: #212a33;
+    --line: #2a323c;
+    --text: #e7ebee;
+    --text-muted: #8e99a6;
+    --accent: #f2a33d;
+    --accent-2: #4fd1c5;
+    --radius: 3px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--accent); color:#12161b; }
+  a{ color:inherit; }
+
+  .wrap{ max-width:960px; margin:0 auto; padding:0 28px; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--accent);
+  }
+  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; font-weight:600; letter-spacing:-.01em; }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(18,22,27,.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:64px;
+  }
+  .brand{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:17px; }
+  .brand span{ color:var(--accent); }
+  .navlinks{ display:flex; gap:28px; list-style:none; font-size:13px; }
+  .navlinks a{
+    text-decoration:none; color:var(--text-muted);
+    font-family:'IBM Plex Mono',monospace; letter-spacing:.04em;
+    transition:color .2s;
+  }
+  .navlinks a:hover, .navlinks a:focus-visible{ color:var(--accent); }
+  @media (max-width:640px){ .navlinks{ display:none; } }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:96px 0 72px; border-bottom:1px solid var(--line); }
+  .hero-tag{ display:flex; align-items:center; gap:10px; margin-bottom:22px; }
+  .hero-tag .dot{ width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px rgba(242,163,61,.15); }
+  h1.name{ font-size:clamp(40px, 7vw, 74px); line-height:1.02; margin-bottom:14px; }
+  .role{ font-size:clamp(16px,2.4vw,20px); color:var(--text-muted); max-width:560px; margin-bottom:36px; }
+  .role b{ color:var(--text); font-weight:500; }
+
+  .kpi-row{
+    display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--line); border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .kpi{ padding:20px 18px; border-right:1px solid var(--line); }
+  .kpi:last-child{ border-right:none; }
+  .kpi .num{ font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:600; color:var(--accent); }
+  .kpi .label{ font-size:11.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.06em; margin-top:4px; }
+  @media (max-width:700px){ .kpi-row{ grid-template-columns:repeat(2,1fr); } .kpi:nth-child(2){border-right:none;} }
+
+  /* ---------- SECTION GENERIC ---------- */
+  section{ padding:80px 0; border-bottom:1px solid var(--line); }
+  .sec-head{ display:flex; align-items:baseline; gap:16px; margin-bottom:44px; }
+  .sec-head h2{ font-size:28px; }
+  .sec-head .idx{ font-family:'IBM Plex Mono',monospace; color:var(--text-muted); font-size:13px; }
+  .sec-line{ flex:1; height:1px; background:var(--line); }
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{ display:grid; grid-template-columns:1.4fr 1fr; gap:56px; }
+  .about-grid p{ color:var(--text-muted); font-size:15.5px; }
+  .about-grid p + p{ margin-top:14px; }
+  .taglist{ display:flex; flex-wrap:wrap; gap:8px; align-content:flex-start; }
+  .tag{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; padding:7px 12px;
+    border:1px solid var(--line); border-radius:20px; color:var(--text-muted);
+  }
+  @media (max-width:760px){ .about-grid{ grid-template-columns:1fr; } }
+
+  /* ---------- ROUTE / EXPERIENCE TIMELINE ---------- */
+  .route{ position:relative; padding-left:34px; }
+  .route::before{
+    content:''; position:absolute; left:6px; top:6px; bottom:6px; width:2px;
+    background:repeating-linear-gradient(to bottom, var(--line) 0 6px, transparent 6px 12px);
+  }
+  .stop{ position:relative; padding-bottom:44px; }
+  .stop:last-child{ padding-bottom:0; }
+  .stop::before{
+    content:''; position:absolute; left:-34px; top:4px; width:11px; height:11px; border-radius:50%;
+    background:var(--surface); border:2px solid var(--text-muted);
+  }
+  .stop.current::before{ border-color:var(--accent); background:var(--accent); box-shadow:0 0 0 5px rgba(242,163,61,.18); }
+  .stop-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 14px; margin-bottom:6px; }
+  .stop-head h3{ font-size:18px; }
+  .stop-period{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--accent); white-space:nowrap; }
+  .stop-role{ color:var(--text-muted); font-size:14px; margin-bottom:8px; }
+  .stop-role .city{ color:var(--text-muted); }
+  .stop-role .city::before{ content:'· '; }
+  .stop-desc{ color:var(--text-muted); font-size:14.5px; max-width:640px; }
+  .badge-current{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--bg); background:var(--accent); padding:2px 8px; border-radius:10px;
+  }
+
+  /* ---------- EDUCATION ---------- */
+  .edu-list{ display:flex; flex-direction:column; gap:22px; }
+  .edu-item{ display:flex; justify-content:space-between; align-items:baseline; gap:20px; border-bottom:1px solid var(--line); padding-bottom:22px; }
+  .edu-item:last-child{ border-bottom:none; padding-bottom:0; }
+  .edu-item h3{ font-size:16.5px; margin-bottom:4px; }
+  .edu-item .school{ color:var(--text-muted); font-size:13.5px; }
+  .edu-item .period{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text-muted); white-space:nowrap; }
+  @media (max-width:600px){ .edu-item{ flex-direction:column; } }
+
+  /* ---------- PROJECTS ---------- */
+  .proj-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+  .proj-card{
+    border:1px solid var(--line); border-radius:var(--radius); padding:22px;
+    background:var(--surface); transition:border-color .2s, transform .2s;
+  }
+  .proj-card:hover{ border-color:var(--accent-2); transform:translateY(-2px); }
+  .proj-card h3{ font-size:15.5px; margin-bottom:8px; color:var(--accent-2); }
+  .proj-card p{ font-size:13.5px; color:var(--text-muted); }
+  @media (max-width:700px){ .proj-grid{ grid-template-columns:1fr; } }
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  footer{ padding:72px 0 48px; }
+  .contact-box{
+    display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:24px;
+  }
+  .contact-box h2{ font-size:clamp(26px,4vw,38px); max-width:480px; }
+  .contact-links{ display:flex; flex-direction:column; gap:10px; align-items:flex-end; }
+  .contact-links a{
+    font-family:'IBM Plex Mono',monospace; font-size:14px; text-decoration:none; color:var(--text);
+    border-bottom:1px solid var(--line); padding-bottom:2px; transition:border-color .2s,color .2s;
+  }
+  .contact-links a:hover{ color:var(--accent); border-color:var(--accent); }
+  .fine{ margin-top:56px; color:var(--text-muted); font-size:12px; font-family:'IBM Plex Mono',monospace; }
+  @media (max-width:600px){ .contact-box{ flex-direction:column; align-items:flex-start; } .contact-links{ align-items:flex-start; } }
+
+  [data-reveal]{ opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease; }
+  [data-reveal].in{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion: reduce){
+    [data-reveal]{ opacity:1; transform:none; transition:none; }
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="brand">ANDRÉ<span>·</span>COSTA</div>
+    <ul class="navlinks">
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#rota">Trajetória</a></li>
+      <li><a href="#formacao">Formação</a></li>
+      <li><a href="#sistemas">Sistemas</a></li>
+      <li><a href="projetos.html">Projetos ↗</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <section class="hero" style="border-bottom:1px solid var(--line);">
+    <div class="hero-tag">
+      <span class="dot"></span>
+      <span class="eyebrow">Manifesto profissional · Itajaí, SC</span>
+    </div>
+    <h1 class="name">André Costa</h1>
+    <p class="role">Coordenador de <b>Logística & Operações</b> — mais de 15 anos liderando equipes, roteirização e cadeia de suprimentos com foco em KPIs e melhoria contínua.</p>
+
+    <div class="kpi-row" data-reveal>
+      <div class="kpi"><div class="num">15+</div><div class="label">Anos de logística</div></div>
+      <div class="kpi"><div class="num">10</div><div class="label">Posições ocupadas</div></div>
+      <div class="kpi"><div class="num">4</div><div class="label">Estados atendidos</div></div>
+      <div class="kpi"><div class="num">45+</div><div class="label">Pessoas coordenadas</div></div>
+    </div>
+  </section>
+
+  <section id="sobre">
+    <div class="sec-head"><span class="idx">§01</span><h2>Sobre</h2><div class="sec-line"></div></div>
+    <div class="about-grid">
+      <div data-reveal>
+        <p>Profissional com mais de 15 anos de experiência em logística, transporte e cadeia de suprimentos, com atuação sólida como líder de equipes operacionais em empresas de médio e grande porte — sempre com foco em resultado, melhoria contínua e otimização de processos.</p>
+        <p>Especialista em KPIs, picking, roteirização, ERP, controle de estoque e desenvolvimento de dashboards para acompanhamento de performance em tempo real. Pós-graduando em Gestão da Logística para E-Commerce, com perfil proativo, resiliente e forte domínio de Excel, Google Sheets e ferramentas digitais.</p>
+      </div>
+      <div data-reveal>
+        <div class="taglist">
+          <span class="tag">Coordenação de equipe</span>
+          <span class="tag">Roteirização</span>
+          <span class="tag">KPIs & Dashboards</span>
+          <span class="tag">Picking</span>
+          <span class="tag">ERP</span>
+          <span class="tag">Controle de estoque</span>
+          <span class="tag">VBA Excel</span>
+          <span class="tag">Roadshow</span>
+          <span class="tag">Inglês</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="rota">
+    <div class="sec-head"><span class="idx">§02</span><h2>Trajetória</h2><div class="sec-line"></div></div>
+
+    <div class="route">
+
+      <div class="stop current" data-reveal>
+        <div class="stop-head">
+          <h3>Operação de Logística & Transporte</h3>
+          <span class="badge-current">Atual</span>
+          <span class="stop-period">set/2025 — presente · 11 meses</span>
+        </div>
+        <div class="stop-role">Coordenador de Logística Interna <span class="city">Itajaí, SC</span></div>
+        <p class="stop-desc">Coordenação de ferramentas operacionais, apresentações mensais para a liderança do departamento e gestão de equipe e frota.</p>
+      </div>
+
+      <div class="stop" data-reveal>
+        <div class="stop-head"><h3>E-commerce & Marketplace</h3><span class="stop-period">mai/2023 — jul/2025 · 2a 3m</span></div>
+        <div class="stop-role">Líder de Equipe <span class="city">Itajaí, SC</span></div>
+        <p class="stop-desc">Planejamento operacional com registros, cálculos e conferências; supervisão do recebimento, separação e expedição de pedidos; controle de qualidade e geração de relatórios de desempenho para suporte à decisão da gerência.</p>
+      </div>
+
+      <div class="stop" data-reveal>
+        <div class="stop-head"><h3>Rede de Varejo de Eletroeletrônicos</h3><span class="stop-period">mar/2022 — jan/2023 · 11m</span></div>
+        <div class="stop-role">Coordenador de Logística <span class="city">Balneário Camboriú, SC</span></div>
+        <p class="stop-desc">Coordenação de distribuição, recebimento, separação e entregas para rede de 6 lojas de eletroeletrônicos importados, com 3 depósitos e equipe de 9 pessoas — sistema, inventários, endereçamento e roteirização.</p>
+      </div>
+
+      <div class="stop" data-reveal>
+        <div class="stop-head"><h3>Distribuidora de Peças & Componentes</h3><span class="stop-period">mar/2019 — mar/2022 · 3a 1m</span></div>
+        <div class="stop-role">Supervisão de Logística <span class="city">Londrina, PR</span></div>
+        <p class="stop-desc">Gestão do processo logístico ponta a ponta (entrada, locação, separação, faturamento, expedição); controle de índices de performance e reestruturação de picking. Equipe de 10 internos + 13 externos, atuando em RS/SC/PR/SP/MS/MT com 11 filiais.</p>
+      </div>
+
+      <div class="stop" data-reveal>
+        <div class="stop-head"><h3>Distribuidora do Setor Siderúrgico</h3><span class="stop-period">out/2017 — out/2018 · 1a 1m</span></div>
+        <div class="stop-role">Gerente de Operações e Transporte <span class="city">Londrina, PR</span></div>
+        <p class="stop-desc">Estratégias de contenção de despesas, planejamento de diretivas logísticas e roteiro de entregas; faturamento, expedição e controle de materiais.</p>
+      </div>
+
+      <div class="stop" data-reveal>
+        <div class="stop-head"><h3>Grupo Comercial Multissetorial</h3><span class="stop-period">mar/2012 — abr/2017 · 5a 2m</span></div>
+        <div class="stop-role">Coordenador de Logística <span class="city">Cambé, PR</span></div>
+        <p class="stop-desc">Balanceamento de rotas e ordenação de pontos de venda; gestão e atualização de ERP, cubos/KPIs e sistema de roadshow; suporte e treinamento de usuários. Projetos em duas praças, coordenando média de 20 caminhões e 45 pessoas.</p>
+      </div>
+
+      <div class="stop" data-reveal>
+        <div class="stop-head"><h3>Indústria de Bebidas</h3><span class="stop-period">mai/2008 — fev/2012 · 3a 10m</span></div>
+        <div class="stop-role">Assistente Administrativo de Logística <span class="city">Cambé, PR</span></div>
+        <p class="stop-desc">Escala de motoristas e auxiliares, montagem de rotas de entrega, faturamento e emissão de notas fiscais, suporte a clientes com pedidos especiais (EDI).</p>
+      </div>
+
+      <div class="stop" data-reveal>
+        <div class="stop-head"><h3>Indústria Metalúrgica</h3><span class="stop-period">jul/2007 — mai/2008 · 11m</span></div>
+        <div class="stop-role">Almoxarife <span class="city">Cambé, PR</span></div>
+        <p class="stop-desc">Acompanhamento de índices de carregamento e movimentação; controles de programação de produção industrial.</p>
+      </div>
+
+      <div class="stop" data-reveal>
+        <div class="stop-head"><h3>Transportadora de Cargas</h3><span class="stop-period">mai/2006 — mar/2007 · 11m</span></div>
+        <div class="stop-role">Auxiliar Administrativo de Logística <span class="city">Londrina, PR</span></div>
+        <p class="stop-desc">Suporte fiscal e operacional para carga agroquímica; controle de viagens, averbação de seguros e cálculo de fretes.</p>
+      </div>
+
+      <div class="stop" data-reveal>
+        <div class="stop-head"><h3>Armazenagem Geral (Operação Terceirizada)</h3><span class="stop-period">abr/2003 — nov/2005 · 2a 8m</span></div>
+        <div class="stop-role">CPD e Logística <span class="city">Londrina, PR</span></div>
+        <p class="stop-desc">Inventários para cliente do setor alimentício (350 produtos / 7.000 m²) e controle de produção manufaturada para cliente industrial, com emissão de ordens de fabricação.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="formacao">
+    <div class="sec-head"><span class="idx">§03</span><h2>Formação</h2><div class="sec-line"></div></div>
+    <div class="edu-list">
+      <div class="edu-item" data-reveal>
+        <div>
+          <h3>Pós-graduação — Gestão da Logística para E-Commerce</h3>
+          <div class="school">UNINTER Centro Universitário Internacional</div>
+        </div>
+        <div class="period">mar/2023 — dez/2024</div>
+      </div>
+      <div class="edu-item" data-reveal>
+        <div>
+          <h3>CST — Gestão da Cadeia de Suprimentos e Logística</h3>
+          <div class="school">UNINTER Centro Universitário Internacional</div>
+        </div>
+        <div class="period">jan/2006 — dez/2009</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sistemas">
+    <div class="sec-head"><span class="idx">§04</span><h2>Sistemas desenvolvidos</h2><div class="sec-line"></div></div>
+    <p style="color:var(--text-muted); max-width:640px; margin-bottom:32px; font-size:14.5px;" data-reveal>
+      Além da coordenação operacional, desenvolvo ferramentas web próprias para digitalizar rotinas de logística interna — de gestão de mão de obra terceirizada a inventário com leitura de código de barras.
+    </p>
+    <div class="proj-grid">
+      <div class="proj-card" data-reveal>
+        <h3>Gestão de Terceirizados</h3>
+        <p>Sistema web para gestão de mão de obra terceirizada: mural de vagas, ponto com apontamento de horas extras, avaliação por estrelas e painel de pendências.</p>
+      </div>
+      <div class="proj-card" data-reveal>
+        <h3>Inventário v3.0</h3>
+        <p>PWA de inventário com leitor de código de barras, sincronização em tempo real entre operadores e exportação para CSV.</p>
+      </div>
+      <div class="proj-card" data-reveal>
+        <h3>Painel de Presentation Dashboard</h3>
+        <p>Dashboard operacional para reuniões mensais de liderança, com 9 quadrantes e 21 indicadores de expedição e logística interna.</p>
+      </div>
+      <div class="proj-card" data-reveal>
+        <h3>Conferência de Volumes</h3>
+        <p>Ferramenta de conferência de minutas de carga, com importação de planilhas e interface mobile-first para conferentes.</p>
+      </div>
+    </div>
+    <a href="projetos.html" style="display:inline-flex; align-items:center; gap:8px; margin-top:32px; font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--accent-2); text-decoration:none; border-bottom:1px solid var(--accent-2); padding-bottom:3px;" data-reveal>
+      Ver telas e estudos de caso em detalhe →
+    </a>
+  </section>
+
+</main>
+
+<footer id="contato">
+  <div class="wrap">
+    <div class="contact-box">
+      <h2>Vamos conversar sobre a próxima operação.</h2>
+      <div class="contact-links">
+        <a href="mailto:alacosta27@gmail.com">alacosta27@gmail.com</a>
+        <a href="https://www.linkedin.com/in/andr%C3%A9-costa-1b8b189a/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+    </div>
+    <div class="fine wrap" style="padding:0;">© 2026 André Costa — Logística & Operações. Itajaí, SC.</div>
+  </div>
+</footer>
+
+<script>
+  const els = document.querySelectorAll('[data-reveal]');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold:.15 });
+  els.forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>André Costa — Sistemas & Projetos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #12161b;
+    --surface: #1a2027;
+    --surface-2: #212a33;
+    --line: #2a323c;
+    --text: #e7ebee;
+    --text-muted: #8e99a6;
+    --accent: #f2a33d;
+    --accent-2: #4fd1c5;
+    --radius: 3px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{ background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  ::selection{ background:var(--accent); color:#12161b; }
+  a{ color:inherit; }
+  .wrap{ max-width:1040px; margin:0 auto; padding:0 28px; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  .eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); }
+  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; font-weight:600; letter-spacing:-.01em; }
+
+  /* NAV */
+  header{ position:sticky; top:0; z-index:50; background:rgba(18,22,27,.85); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  nav.wrap{ display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .brand{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:17px; }
+  .brand span{ color:var(--accent); }
+  .back-link{
+    font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--text-muted); text-decoration:none;
+    display:flex; align-items:center; gap:8px; transition:color .2s;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  /* HERO */
+  .hero{ padding:88px 0 64px; border-bottom:1px solid var(--line); }
+  .hero-tag{ display:flex; align-items:center; gap:10px; margin-bottom:22px; }
+  .hero-tag .dot{ width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px rgba(242,163,61,.15); }
+  h1.title{ font-size:clamp(34px,5.6vw,54px); line-height:1.05; margin-bottom:18px; max-width:760px; }
+  .hero p.lede{ font-size:16px; color:var(--text-muted); max-width:600px; }
+
+  /* SECTION GENERIC */
+  .project{ padding:80px 0; border-bottom:1px solid var(--line); }
+  .proj-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 16px; margin-bottom:8px; }
+  .proj-num{ font-family:'IBM Plex Mono',monospace; color:var(--text-muted); font-size:13px; }
+  .proj-head h2{ font-size:26px; }
+  .proj-status{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--accent-2); border:1px solid var(--accent-2); padding:2px 9px; border-radius:20px;
+  }
+  .proj-desc{ color:var(--text-muted); font-size:15px; max-width:640px; margin:14px 0 26px; }
+  .stack{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:36px; }
+  .stack span{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--text-muted);
+    border:1px solid var(--line); padding:5px 11px; border-radius:20px;
+  }
+
+  /* BROWSER FRAME FOR SCREENSHOTS */
+  .shots{ display:grid; gap:22px; }
+  .shots.two{ grid-template-columns:1fr 1fr; }
+  .browser{
+    border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--surface);
+  }
+  .browser-bar{
+    display:flex; align-items:center; gap:8px; padding:9px 12px; background:var(--surface-2); border-bottom:1px solid var(--line);
+  }
+  .browser-dots{ display:flex; gap:6px; }
+  .browser-dots span{ width:9px; height:9px; border-radius:50%; background:var(--line); }
+  .browser-url{
+    flex:1; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-muted);
+    background:var(--bg); border-radius:20px; padding:4px 12px; text-align:center; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;
+  }
+  .browser img{ width:100%; display:block; }
+  .shot-caption{ font-size:12.5px; color:var(--text-muted); margin-top:10px; font-family:'IBM Plex Mono',monospace; }
+  @media (max-width:760px){ .shots.two{ grid-template-columns:1fr; } }
+
+  .feat-list{ margin-top:30px; display:grid; grid-template-columns:repeat(2,1fr); gap:10px 24px; }
+  .feat-list li{ list-style:none; color:var(--text-muted); font-size:13.5px; padding-left:16px; position:relative; }
+  .feat-list li::before{ content:'—'; position:absolute; left:0; color:var(--accent); }
+  @media (max-width:600px){ .feat-list{ grid-template-columns:1fr; } }
+
+  /* FOOTER */
+  footer{ padding:72px 0 48px; }
+  .contact-box{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:24px; }
+  .contact-box h2{ font-size:clamp(24px,3.6vw,34px); max-width:460px; }
+  .contact-links{ display:flex; flex-direction:column; gap:10px; align-items:flex-end; }
+  .contact-links a{
+    font-family:'IBM Plex Mono',monospace; font-size:14px; text-decoration:none; color:var(--text);
+    border-bottom:1px solid var(--line); padding-bottom:2px; transition:border-color .2s,color .2s;
+  }
+  .contact-links a:hover{ color:var(--accent); border-color:var(--accent); }
+  .fine{ margin-top:56px; color:var(--text-muted); font-size:12px; font-family:'IBM Plex Mono',monospace; }
+  @media (max-width:600px){ .contact-box{ flex-direction:column; align-items:flex-start; } .contact-links{ align-items:flex-start; } }
+
+  [data-reveal]{ opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease; }
+  [data-reveal].in{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion: reduce){ [data-reveal]{ opacity:1; transform:none; transition:none; } html{ scroll-behavior:auto; } }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="brand">ANDRÉ<span>·</span>COSTA</div>
+    <a class="back-link" href="index.html">← Voltar ao portfólio</a>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="hero-tag"><span class="dot"></span><span class="eyebrow">Estudos de caso · Sistemas próprios</span></div>
+    <h1 class="title">Sistemas que construí para resolver problemas reais de operação.</h1>
+    <p class="lede">Além de coordenar equipes, desenvolvo as próprias ferramentas que a operação usa no dia a dia — dashboards, apps de conferência e painéis de gestão, todos em produção em operações reais de logística.</p>
+  </section>
+
+  <section class="project" id="conferencia">
+    <div class="proj-head">
+      <span class="proj-num">§01</span>
+      <h2>Conferência Geral</h2>
+      <span class="proj-status">Em produção</span>
+    </div>
+    <p class="proj-desc">Sistema de conferência de carga que substitui o controle manual em papel: cada veículo de entrada ou saída vira um card com contagem de notas fiscais, status de discrepância e conferência campo a campo, com endereçamento obrigatório e movimentação de paletes (PBR, descartável e outros) resumida por dia.</p>
+    <div class="stack">
+      <span>Firebase Realtime DB</span>
+      <span>JavaScript</span>
+      <span>Chart.js</span>
+      <span>Mobile-first</span>
+      <span>PWA</span>
+    </div>
+
+    <div class="shots" data-reveal>
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <div class="browser-url">app.conferencia-geral.com — Dashboard</div>
+        </div>
+        <img src="conferencia-dashboard.jpg" alt="Dashboard da Conferência Geral com operações do dia, discrepâncias e gráficos por conferente e veículo" loading="lazy">
+      </div>
+    </div>
+
+    <div class="shots two" style="margin-top:22px;" data-reveal>
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <div class="browser-url">app.conferencia-geral.com — Operações</div>
+        </div>
+        <img src="conferencia-operacoes.jpg" alt="Painel de cards com veículos em entrada e saída, notas fiscais e status pendente" loading="lazy">
+      </div>
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <div class="browser-url">app.conferencia-geral.com — Conferência de Campos</div>
+        </div>
+        <img src="conferencia-campos.jpg" alt="Tela de conferência campo a campo com endereçamento obrigatório e status OK / não OK" loading="lazy">
+      </div>
+    </div>
+
+    <ul class="feat-list">
+      <li>Painel com operações do dia, discrepâncias e conferentes ativos</li>
+      <li>Cards de entrada/saída por placa, com contagem de NFs</li>
+      <li>Conferência campo a campo com endereçamento obrigatório</li>
+      <li>Resumo diário de movimentação de paletes por tipo</li>
+    </ul>
+  </section>
+
+  <section class="project" id="expedicao">
+    <div class="proj-head">
+      <span class="proj-num">§02</span>
+      <h2>Dashboard Expedição & Logística Interna</h2>
+      <span class="proj-status">Em produção</span>
+    </div>
+    <p class="proj-desc">Painel mensal usado nas apresentações para a liderança do departamento, cobrindo 9 quadrantes e 21 indicadores. Compara despachos e volumetria mês a mês em um único gráfico combinado, com leitura automática do que os números indicam.</p>
+    <div class="stack">
+      <span>Chart.js</span>
+      <span>datalabels</span>
+      <span>localStorage</span>
+      <span>Importação via Excel</span>
+    </div>
+
+    <div class="shots" data-reveal>
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <div class="browser-url">app.dashboard-expedicao.com</div>
+        </div>
+        <img src="expedicao-dashboard.jpg" alt="Dashboard de Expedição e Logística Interna com KPIs de despachos, volumetria e comparativo mensal combinado" loading="lazy">
+      </div>
+    </div>
+
+    <ul class="feat-list">
+      <li>KPIs comparando o mês atual com o anterior (despachos, volumetria)</li>
+      <li>Gráfico combinado de barras e linha em eixos duplos</li>
+      <li>Leitura automática do mês, apontando padrões como fracionamento operacional</li>
+      <li>Grade de dados editável, com importação direta do Excel</li>
+    </ul>
+  </section>
+
+  <section class="project" id="terceirizados" style="border-bottom:none;">
+    <div class="proj-head">
+      <span class="proj-num">§03</span>
+      <h2>Gestão de Terceirizados</h2>
+      <span class="proj-status">Em produção</span>
+    </div>
+    <p class="proj-desc">Sistema completo de gestão de mão de obra terceirizada: mural de vagas, acompanhamento de ponto, acerto financeiro, cadastro de empresas, motoristas e um dashboard consolidado por período, empresa e função.</p>
+    <div class="stack">
+      <span>Firebase Realtime DB</span>
+      <span>Multi-módulo</span>
+      <span>Chart.js</span>
+      <span>Controle de acesso</span>
+    </div>
+
+    <div class="shots two" data-reveal>
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <div class="browser-url">app.gestao-terceirizados.com — Dashboard</div>
+        </div>
+        <img src="terceirizados-dashboard1.jpg" alt="Dashboard de gestão de terceirizados com custo total, colaboradores, registros e horas extras" loading="lazy">
+      </div>
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <div class="browser-url">app.gestao-terceirizados.com — Resumo Geral</div>
+        </div>
+        <img src="terceirizados-dashboard2.jpg" alt="Gráficos de registros por data, horas trabalhadas por empresa, custo por operação e evolução de custo por mês" loading="lazy">
+      </div>
+    </div>
+
+    <ul class="feat-list">
+      <li>Mural de vagas e acompanhamento de ponto com apontamento de horas extras</li>
+      <li>Filtro por período e empresa, com atualização em tempo real</li>
+      <li>Custo por empresa, por operação/centro de custo e evolução mensal</li>
+      <li>Módulos de empresas, motoristas, G.R. e avisos, com login por perfil</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="contact-box">
+      <h2>Quer ver como isso se aplica na sua operação?</h2>
+      <div class="contact-links">
+        <a href="mailto:alacosta27@gmail.com">alacosta27@gmail.com</a>
+        <a href="https://www.linkedin.com/in/andr%C3%A9-costa-1b8b189a/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="index.html">← Voltar ao portfólio</a>
+      </div>
+    </div>
+    <div class="fine wrap" style="padding:0;">© 2026 André Costa — Sistemas & Projetos.</div>
+  </div>
+</footer>
+
+<script>
+  const els = document.querySelectorAll('[data-reveal]');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold:.12 });
+  els.forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
